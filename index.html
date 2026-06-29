@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Zaney Tarot</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell" data-design="celshade" data-card-style="anime" data-table="moonlit" data-visual-mode="anime">
+      <section class="control-rail" aria-label="Reading controls">
+        <div class="brand-lockup">
+          <div class="brand-mark" aria-hidden="true">
+            <span></span>
+          </div>
+          <div>
+            <h1>Zaney Tarot</h1>
+            <p>Draw a productivity reading from your Notion deck.</p>
+          </div>
+        </div>
+
+        <div class="panel card-count-panel">
+          <div class="panel-title">
+            <span>Cards</span>
+            <strong id="countValue">3</strong>
+          </div>
+          <div class="stepper" aria-label="Choose card count">
+            <button class="icon-button" id="decreaseCards" type="button" aria-label="Draw fewer cards">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 12h14" />
+              </svg>
+            </button>
+            <button class="icon-button" id="increaseCards" type="button" aria-label="Draw more cards">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+            </button>
+          </div>
+          <div class="count-options" role="radiogroup" aria-label="Preset card counts">
+            <button type="button" class="count-option" data-count="1">1</button>
+            <button type="button" class="count-option is-active" data-count="3">3</button>
+            <button type="button" class="count-option" data-count="5">5</button>
+            <button type="button" class="count-option" data-count="7">7</button>
+            <button type="button" class="count-option" data-count="10">10</button>
+          </div>
+        </div>
+
+        <div class="panel look-panel">
+          <div class="field-stack">
+            <label class="field-label" for="visualModeSelect">Visual mode</label>
+            <select id="visualModeSelect">
+              <option value="anime">Anime table</option>
+              <option value="pixel">Pixel table</option>
+            </select>
+          </div>
+          <div class="field-stack">
+            <label class="field-label" for="cardStyleSelect">Card style</label>
+            <select id="cardStyleSelect">
+              <option value="anime">Anime Arcana</option>
+              <option value="portrait">Cel Portraits</option>
+              <option value="minimal">Symbolic Minimal</option>
+              <option value="manga">Ink Manga</option>
+              <option value="pixel-sheet">Pixel Sheet</option>
+              <option value="silver-pendant">Silver Pendant</option>
+            </select>
+          </div>
+          <div class="field-stack">
+            <label class="field-label" for="tableSelect">Table design</label>
+            <select id="tableSelect">
+              <option value="moonlit">Moonlit Atelier</option>
+              <option value="sakura">Sakura Dusk</option>
+              <option value="neon">Neon Shrine</option>
+              <option value="ocean">Ocean Oracle</option>
+              <option value="forest">Forest Coven</option>
+              <option value="solar">Solar Temple</option>
+              <option value="velvet">Velvet Theatre</option>
+              <option value="snow">Snow Observatory</option>
+              <option value="desert">Desert Star</option>
+              <option value="rose">Rose Library</option>
+            </select>
+          </div>
+          <div class="field-stack">
+            <label class="field-label" for="designSelect">Glow theme</label>
+            <select id="designSelect">
+              <option value="celshade">Moonlit Celshade</option>
+              <option value="sunrise">Pastel Sunrise</option>
+              <option value="noir">Ink Noir</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="panel deck-panel">
+          <div class="panel-title">
+            <span>Deck</span>
+            <strong id="deckTotal">62</strong>
+          </div>
+          <div class="deck-stack" id="deckStack" aria-hidden="true">
+            <div class="deck-card card-back back-one"></div>
+            <div class="deck-card card-back back-two"></div>
+            <div class="deck-card card-back back-three"></div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="action-button secondary" id="shuffleButton" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M16 3h5v5M4 20l5.5-5.5M21 3l-6.5 6.5M4 4l5.5 5.5M16 21h5v-5M14.5 14.5 21 21" />
+            </svg>
+            Shuffle
+          </button>
+          <button class="action-button primary" id="drawButton" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9L12 2Z" />
+              <path d="M19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9L19 15Z" />
+            </svg>
+            Draw Reading
+          </button>
+          <button class="action-button codex" id="codexButton" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 4h10a4 4 0 0 1 4 4v12H9a4 4 0 0 0-4-4V4Z" />
+              <path d="M5 16V4" />
+            </svg>
+            View Deck
+          </button>
+        </div>
+      </section>
+
+      <section class="reading-stage" aria-label="Tarot reading">
+        <div class="top-bar">
+          <div>
+            <p class="stage-label">Today's Energy</p>
+            <h2 id="readingTitle">Shuffle, then draw your reading.</h2>
+          </div>
+          <button class="small-button" id="resetButton" type="button">Reset</button>
+        </div>
+
+        <div class="spread" id="spread" aria-live="polite"></div>
+
+        <aside class="reading-panel" id="readingPanel" aria-live="polite">
+          <p class="empty-kicker">Hover a revealed card</p>
+          <h3>Card meanings appear here.</h3>
+          <p>Choose a count, shuffle the deck, then draw. Each card carries an upright or reversed task from your Zaney Tarot system.</p>
+        </aside>
+      </section>
+    </main>
+
+    <section class="codex-modal" id="codexModal" aria-label="Deck codex" hidden>
+      <div class="codex-dialog" role="dialog" aria-modal="true" aria-labelledby="codexTitle">
+        <div class="codex-top">
+          <div>
+            <p class="stage-label">Deck Codex</p>
+            <h2 id="codexTitle">Zaney Tarot Cards</h2>
+          </div>
+          <button class="small-button" id="codexCloseButton" type="button">Close</button>
+        </div>
+        <div class="codex-body">
+          <div class="codex-grid" id="codexGrid"></div>
+          <aside class="codex-detail" id="codexDetail"></aside>
+        </div>
+        <div class="codex-footer">
+          <button class="pixel-nav" id="codexPrevButton" type="button">Previous</button>
+          <span id="codexPageLabel">Page 1/5</span>
+          <button class="pixel-nav" id="codexNextButton" type="button">Next</button>
+        </div>
+      </div>
+    </section>
+
+    <script src="app.js"></script>
+  </body>
+</html>

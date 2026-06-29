@@ -1,0 +1,43 @@
+{
+  "styleReference": "Screenshot 2026-06-29 at 04.09.22.png",
+  "generationMode": "built-in image_gen",
+  "deckSize": 62,
+  "note": "These are generated deck-sheet assets for the 62 cards currently present in the Zaney Tarot app: 22 Major Arcana plus Ace through Ten for Wands, Cups, Swords, and Pentacles.",
+  "sheets": [
+    {
+      "file": "assets/card-sheets/major-00-08.png",
+      "layout": "3x3",
+      "cards": ["The Fool", "The Magician", "The High Priestess", "The Empress", "The Emperor", "The Hierophant", "The Lovers", "The Chariot", "Strength"]
+    },
+    {
+      "file": "assets/card-sheets/major-09-17.png",
+      "layout": "3x3",
+      "cards": ["The Hermit", "Wheel of Fortune", "Justice", "The Hanged One", "Death", "Temperance", "The Devil", "The Tower", "The Star"]
+    },
+    {
+      "file": "assets/card-sheets/major-18-21.png",
+      "layout": "2x2",
+      "cards": ["The Moon", "The Sun", "Judgement", "The World"]
+    },
+    {
+      "file": "assets/card-sheets/wands-ace-10.png",
+      "layout": "5x2",
+      "cards": ["Ace of Wands", "Two of Wands", "Three of Wands", "Four of Wands", "Five of Wands", "Six of Wands", "Seven of Wands", "Eight of Wands", "Nine of Wands", "Ten of Wands"]
+    },
+    {
+      "file": "assets/card-sheets/cups-ace-10.png",
+      "layout": "5x2",
+      "cards": ["Ace of Cups", "Two of Cups", "Three of Cups", "Four of Cups", "Five of Cups", "Six of Cups", "Seven of Cups", "Eight of Cups", "Nine of Cups", "Ten of Cups"]
+    },
+    {
+      "file": "assets/card-sheets/swords-ace-10.png",
+      "layout": "5x2",
+      "cards": ["Ace of Swords", "Two of Swords", "Three of Swords", "Four of Swords", "Five of Swords", "Six of Swords", "Seven of Swords", "Eight of Swords", "Nine of Swords", "Ten of Swords"]
+    },
+    {
+      "file": "assets/card-sheets/pentacles-ace-10.png",
+      "layout": "5x2",
+      "cards": ["Ace of Pentacles", "Two of Pentacles", "Three of Pentacles", "Four of Pentacles", "Five of Pentacles", "Six of Pentacles", "Seven of Pentacles", "Eight of Pentacles", "Nine of Pentacles", "Ten of Pentacles"]
+    }
+  ]
+}
