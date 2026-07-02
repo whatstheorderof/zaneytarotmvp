@@ -361,7 +361,7 @@ select {
 .reading-stage {
   min-width: 0;
   display: grid;
-  grid-template-rows: auto minmax(360px, 1fr) auto;
+  grid-template-rows: auto minmax(360px, 1fr) auto auto;
   gap: 20px;
   padding: 26px clamp(18px, 4vw, 48px) 22px;
 }
@@ -690,7 +690,8 @@ h2 {
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.26);
 }
 
-.reading-panel {
+.reading-panel,
+.reading-report {
   width: min(860px, 100%);
   justify-self: center;
   border: 1px solid var(--line);
@@ -700,22 +701,88 @@ h2 {
   padding: 20px;
 }
 
-.reading-panel h3 {
+.reading-report {
+  border-color: rgba(142, 215, 218, 0.34);
+  background:
+    radial-gradient(circle at 92% 14%, rgba(142, 215, 218, 0.12), transparent 12rem),
+    linear-gradient(180deg, rgba(12, 26, 35, 0.9), rgba(5, 9, 16, 0.88));
+}
+
+.reading-panel h3,
+.reading-report h3 {
   margin: 6px 0 12px;
   color: var(--rose);
   font-size: clamp(1.45rem, 3vw, 2rem);
   line-height: 1.05;
 }
 
-.reading-panel p {
+.reading-report h3 {
+  color: var(--cyan);
+}
+
+.reading-panel p,
+.reading-report p {
   color: #e6e1d6;
   line-height: 1.55;
 }
 
-.reading-focus {
+.reading-focus,
+.report-lead {
   max-width: 42rem;
   color: #fff8e8;
   font-size: 1.03rem;
+}
+
+.report-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.report-card {
+  min-width: 0;
+  border: 1px solid rgba(142, 215, 218, 0.22);
+  border-radius: var(--radius);
+  padding: 14px 15px;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.report-card span {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--gold);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.report-card strong {
+  display: block;
+  margin-bottom: 7px;
+  color: #fff8e8;
+  font-size: 1rem;
+}
+
+.report-card p {
+  font-size: 0.92rem;
+}
+
+.report-steps {
+  display: grid;
+  gap: 10px;
+  margin: 18px 0 0;
+  padding-left: 20px;
+  color: #e6e1d6;
+}
+
+.report-steps li {
+  line-height: 1.5;
+}
+
+.report-steps strong {
+  color: #fff8e8;
 }
 
 .meaning-grid {
@@ -982,6 +1049,7 @@ h2 {
 .app-shell[data-visual-mode="pixel"] .control-rail,
 .app-shell[data-visual-mode="pixel"] .panel,
 .app-shell[data-visual-mode="pixel"] .reading-panel,
+.app-shell[data-visual-mode="pixel"] .reading-report,
 .app-shell[data-visual-mode="pixel"] select,
 .app-shell[data-visual-mode="pixel"] .icon-button,
 .app-shell[data-visual-mode="pixel"] .small-button {
@@ -1246,11 +1314,16 @@ h2 {
 
   .reading-stage {
     min-height: 66vh;
-    grid-template-rows: auto auto auto;
+    grid-template-rows: auto auto auto auto;
   }
 
-  .reading-panel {
+  .reading-panel,
+  .reading-report {
     justify-self: stretch;
+  }
+
+  .report-grid {
+    grid-template-columns: 1fr;
   }
 }
 

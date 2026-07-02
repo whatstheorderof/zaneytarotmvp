@@ -154,6 +154,7 @@ const state = {
 const appShell = document.querySelector(".app-shell");
 const spread = document.querySelector("#spread");
 const readingPanel = document.querySelector("#readingPanel");
+const readingReport = document.querySelector("#readingReport");
 const readingTitle = document.querySelector("#readingTitle");
 const countValue = document.querySelector("#countValue");
 const deckTotal = document.querySelector("#deckTotal");
@@ -202,6 +203,7 @@ function drawReading() {
 
   readingTitle.textContent = `${state.count}-card reading revealed.`;
   renderSpread();
+  renderReadingReport();
   showMeaning(state.reading[0]);
 }
 
@@ -215,6 +217,7 @@ function resetReading() {
     <h3>Card meanings appear here.</h3>
     <p>Choose a count, shuffle the deck, then draw. Each card carries an upright or reversed task from your Zaney Tarot system.</p>
   `;
+  renderReadingReport();
 }
 
 function renderSpread() {
@@ -304,6 +307,122 @@ function showMeaning(card) {
     </div>
     <p class="prompt-line"><span class="meta-label">Visual cue</span><br>${card.image}</p>
   `;
+}
+
+function renderReadingReport() {
+  if (!state.reading.length) {
+    readingReport.innerHTML = `
+      <p class="empty-kicker">Whole Reading</p>
+      <h3>Report appears after a draw.</h3>
+      <p>Once the cards are revealed, this panel will pull the spread together into one interpretation.</p>
+    `;
+    return;
+  }
+
+  const report = buildReadingReport(state.reading);
+  readingReport.innerHTML = `
+    <p class="empty-kicker">Whole Reading</p>
+    <h3>${report.title}</h3>
+    <p class="report-lead">${report.lead}</p>
+    <div class="report-grid" aria-label="Reading pattern summary">
+      <div class="report-card">
+        <span>Dominant current</span>
+        <strong>${report.dominantCurrent}</strong>
+        <p>${report.dominantMeaning}</p>
+      </div>
+      <div class="report-card">
+        <span>Orientation</span>
+        <strong>${report.orientation}</strong>
+        <p>${report.orientationMeaning}</p>
+      </div>
+      <div class="report-card">
+        <span>Flow</span>
+        <strong>${report.flowTitle}</strong>
+        <p>${report.flow}</p>
+      </div>
+    </div>
+    <ol class="report-steps">
+      ${report.steps.map((step) => `<li>${step}</li>`).join("")}
+    </ol>
+    <p class="prompt-line"><span class="meta-label">Integration</span><br>${report.integration}</p>
+  `;
+}
+
+function buildReadingReport(reading) {
+  const suitCounts = reading.reduce((counts, card) => {
+    counts[card.suit] = (counts[card.suit] || 0) + 1;
+    return counts;
+  }, {});
+  const sortedSuits = Object.entries(suitCounts).sort((a, b) => b[1] - a[1]);
+  const topCount = sortedSuits[0][1];
+  const dominantSuits = sortedSuits.filter(([, count]) => count === topCount).map(([suit]) => suit);
+  const dominantLabel = dominantSuits.length === 1 ? dominantSuits[0] : formatList(dominantSuits);
+  const dominantDetails = suitDetails[dominantSuits[0]];
+  const reversedCount = reading.filter((card) => card.orientation === "Reversed").length;
+  const uprightCount = reading.length - reversedCount;
+  const first = reading[0];
+  const middle = reading[Math.floor((reading.length - 1) / 2)];
+  const last = reading[reading.length - 1];
+  const spreadName = `${reading.length}-card spread report`;
+
+  return {
+    title: spreadName,
+    lead: `This reading gathers ${reading.length} cards into one pattern. It leans toward ${dominantLabel.toLowerCase()} energy, so the strongest through-line is ${dominantDetails.domain}.`,
+    dominantCurrent: `${dominantLabel} x${topCount}`,
+    dominantMeaning: `Read this as ${dominantDetails.lens}. ${dominantDetails.advice}`,
+    orientation: `${uprightCount} upright / ${reversedCount} reversed`,
+    orientationMeaning: orientationReport(uprightCount, reversedCount),
+    flowTitle: reading.length === 1 ? "Single focus" : `${first.position} to ${last.position}`,
+    flow:
+      reading.length === 1
+        ? `${first.name} is the whole message: ${lowercaseTask(first)}.`
+        : `The spread opens with ${first.name}, turns through ${middle.name}, and lands on ${last.name}. That suggests moving from ${lowercaseTask(first)} toward ${lowercaseTask(last)}.`,
+    steps: reading.map((card) => {
+      const details = suitDetails[card.suit];
+      return `<strong>${card.position}:</strong> ${card.name} (${card.orientation}) points to ${lowercaseTask(card)}. Through ${details.lens}, it speaks to ${details.domain}.`;
+    }),
+    integration: buildIntegrationLine(reading, first, middle, last),
+  };
+}
+
+function orientationReport(uprightCount, reversedCount) {
+  if (reversedCount === 0) {
+    return "The spread is direct and outward-facing. Treat the guidance as ready to act on now.";
+  }
+  if (uprightCount === 0) {
+    return "Every card is reversed, so the report is mostly about blocks, hidden needs, or energy that wants to be restored before action.";
+  }
+  if (reversedCount > uprightCount) {
+    return "Reversed cards outweigh the upright cards, so the reading asks for repair, reflection, and clearing friction before pushing forward.";
+  }
+  if (uprightCount > reversedCount) {
+    return "Upright cards lead the spread, with reversals acting as warnings or pressure points to handle gently.";
+  }
+  return "Upright and reversed cards are balanced, so the reading mixes action with reflection in equal measure.";
+}
+
+function buildIntegrationLine(reading, first, middle, last) {
+  if (reading.length === 1) {
+    return `Let ${first.name} be the whole prompt today: ${punctuate(lowercaseTask(first))}`;
+  }
+
+  const middlePhrase = middle === first || middle === last ? "" : ` Let ${middle.name} be the hinge of the reading: ${punctuate(lowercaseTask(middle))}`;
+  return `Start with ${first.name}: ${punctuate(lowercaseTask(first))}${middlePhrase} Finish with ${last.name}: ${punctuate(lowercaseTask(last))}`;
+}
+
+function lowercaseTask(card) {
+  const task = card.orientation === "Upright" ? card.upright : card.reversed;
+  return task.charAt(0).toLowerCase() + task.slice(1).replace(/[.!?]$/, "");
+}
+
+function formatList(items) {
+  if (items.length <= 1) {
+    return items[0] || "";
+  }
+  if (items.length === 2) {
+    return `${items[0]} and ${items[1]}`;
+  }
+  return `${items.slice(0, -1).join(", ")}, and ${items.at(-1)}`;
 }
 
 function openCodex() {
