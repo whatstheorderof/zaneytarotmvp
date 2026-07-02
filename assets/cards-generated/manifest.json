@@ -63,49 +63,5 @@
     "Eight of Pentacles",
     "Nine of Pentacles",
     "Ten of Pentacles"
-  ],
-  "summary": [
-    {
-      "sheet": "assets/card-sheets/major-00-08.png",
-      "expected": 9,
-      "boxes": 9,
-      "fallback": false
-    },
-    {
-      "sheet": "assets/card-sheets/major-09-17.png",
-      "expected": 9,
-      "boxes": 9,
-      "fallback": false
-    },
-    {
-      "sheet": "assets/card-sheets/major-18-21.png",
-      "expected": 4,
-      "boxes": 4,
-      "fallback": false
-    },
-    {
-      "sheet": "assets/card-sheets/wands-ace-10.png",
-      "expected": 10,
-      "boxes": 10,
-      "fallback": false
-    },
-    {
-      "sheet": "assets/card-sheets/cups-ace-10.png",
-      "expected": 10,
-      "boxes": 10,
-      "fallback": false
-    },
-    {
-      "sheet": "assets/card-sheets/swords-ace-10.png",
-      "expected": 10,
-      "boxes": 10,
-      "fallback": false
-    },
-    {
-      "sheet": "assets/card-sheets/pentacles-ace-10.png",
-      "expected": 10,
-      "boxes": 10,
-      "fallback": false
-    }
   ]
 }
