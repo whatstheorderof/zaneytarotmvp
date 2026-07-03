@@ -148,6 +148,8 @@ const state = {
   count: 3,
   shuffled: false,
   reading: [],
+  question: "",
+  activeCardId: "",
   codexPage: 0,
 };
 
@@ -159,6 +161,7 @@ const readingTitle = document.querySelector("#readingTitle");
 const countValue = document.querySelector("#countValue");
 const deckTotal = document.querySelector("#deckTotal");
 const deckStack = document.querySelector("#deckStack");
+const questionInput = document.querySelector("#questionInput");
 const shareButton = document.querySelector("#shareButton");
 const shareStatus = document.querySelector("#shareStatus");
 const countOptions = Array.from(document.querySelectorAll(".count-option"));
@@ -192,6 +195,7 @@ function drawReading() {
     shuffleDeck();
   }
 
+  state.question = questionInput.value.trim();
   const pool = [...deck];
   state.reading = Array.from({ length: state.count }, (_, index) => {
     const cardIndex = Math.floor(Math.random() * pool.length);
@@ -200,6 +204,7 @@ function drawReading() {
       ...card,
       position: spreadPositions[state.count][index] || `Card ${index + 1}`,
       orientation: Math.random() > 0.32 ? "Upright" : "Reversed",
+      spreadId: `${card.id}-${index}`,
     };
   });
 
@@ -213,12 +218,15 @@ function drawReading() {
 function resetReading() {
   state.shuffled = false;
   state.reading = [];
+  state.question = "";
+  state.activeCardId = "";
+  questionInput.value = "";
   readingTitle.textContent = "Shuffle, then draw your reading.";
   renderSpread();
   readingPanel.innerHTML = `
     <p class="empty-kicker">Hover a revealed card</p>
     <h3>Card meanings appear here.</h3>
-    <p>Choose a count, shuffle the deck, then draw. Each card carries an upright or reversed task from your Zaney Tarot system.</p>
+    <p>Choose a count, add an intention if you want, shuffle the deck, then draw. Each card carries an upright or reversed task from your Zaney Tarot system.</p>
   `;
   renderReadingReport();
   updateShareState("");
@@ -241,6 +249,7 @@ function renderSpread() {
     const theme = suitThemes[card.suit];
     const article = document.createElement("article");
     article.className = "tarot-card";
+    article.dataset.spreadId = card.spreadId;
     article.tabIndex = 0;
     article.style.setProperty("--card-accent", theme.accent);
     article.style.setProperty("--card-base", theme.base);
@@ -292,6 +301,10 @@ function cardArt(suit, index) {
 }
 
 function showMeaning(card) {
+  state.activeCardId = card.spreadId;
+  document.querySelectorAll(".tarot-card").forEach((element) => {
+    element.classList.toggle("is-selected", element.dataset.spreadId === card.spreadId);
+  });
   const current = punctuate(card.orientation === "Upright" ? card.upright : card.reversed);
   const uprightDetail = buildCardDescription(card, "Upright");
   const reversedDetail = buildCardDescription(card, "Reversed");
@@ -324,9 +337,11 @@ function renderReadingReport() {
   }
 
   const report = buildReadingReport(state.reading);
+  const question = state.question ? `<p class="question-line"><span>Intention</span>${escapeHtml(state.question)}</p>` : "";
   readingReport.innerHTML = `
     <p class="empty-kicker">Whole Reading</p>
     <h3>${report.title}</h3>
+    ${question}
     <p class="report-lead">${report.lead}</p>
     <div class="report-grid" aria-label="Reading pattern summary">
       <div class="report-card">
@@ -391,6 +406,7 @@ async function shareReading() {
 
 function buildShareText() {
   const report = buildReadingReport(state.reading);
+  const question = state.question ? [`Intention: ${state.question}`, ""] : [];
   const cards = state.reading.map((card) => {
     const task = punctuate(card.orientation === "Upright" ? card.upright : card.reversed);
     return `${card.position}: ${card.name} (${card.orientation}) - ${task}`;
@@ -400,6 +416,7 @@ function buildShareText() {
     "Zaney Tarot",
     `${state.reading.length}-card reading`,
     "",
+    ...question,
     ...cards,
     "",
     `Whole reading: ${report.lead}`,
@@ -563,6 +580,19 @@ function buildCardDescription(card, orientation) {
 
 function punctuate(text) {
   return /[.!?]$/.test(text) ? text : `${text}.`;
+}
+
+function escapeHtml(text) {
+  return text.replace(/[&<>"']/g, (character) => {
+    const entities = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;",
+    };
+    return entities[character];
+  });
 }
 
 function cardImageFiles(cardName) {

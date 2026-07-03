@@ -251,6 +251,23 @@ select {
   padding: 0 40px 0 14px;
 }
 
+textarea {
+  width: 100%;
+  min-height: 86px;
+  resize: vertical;
+  border: 1px solid rgba(142, 215, 218, 0.38);
+  border-radius: var(--radius);
+  color: var(--text);
+  background: rgba(4, 10, 18, 0.78);
+  padding: 12px 14px;
+  font: inherit;
+  line-height: 1.45;
+}
+
+textarea::placeholder {
+  color: rgba(230, 225, 214, 0.56);
+}
+
 .deck-panel {
   overflow: hidden;
 }
@@ -457,6 +474,12 @@ h2 {
   transform-style: preserve-3d;
   animation: revealCard 560ms ease both;
   overflow: hidden;
+}
+
+.tarot-card.is-selected {
+  outline: 3px solid color-mix(in srgb, var(--card-accent), #fff 18%);
+  outline-offset: 6px;
+  transform: translateY(-4px);
 }
 
 .tarot-card::before {
@@ -753,6 +776,27 @@ h2 {
   max-width: 42rem;
   color: #fff8e8;
   font-size: 1.03rem;
+}
+
+.question-line {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: 44rem;
+  margin: 0 0 14px;
+  border: 1px solid rgba(243, 199, 102, 0.26);
+  border-radius: 999px;
+  padding: 8px 14px;
+  background: rgba(243, 199, 102, 0.08);
+}
+
+.question-line span {
+  color: var(--gold);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .report-grid {
