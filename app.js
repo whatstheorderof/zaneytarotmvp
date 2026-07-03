@@ -159,6 +159,8 @@ const readingTitle = document.querySelector("#readingTitle");
 const countValue = document.querySelector("#countValue");
 const deckTotal = document.querySelector("#deckTotal");
 const deckStack = document.querySelector("#deckStack");
+const shareButton = document.querySelector("#shareButton");
+const shareStatus = document.querySelector("#shareStatus");
 const countOptions = Array.from(document.querySelectorAll(".count-option"));
 const codexModal = document.querySelector("#codexModal");
 const codexGrid = document.querySelector("#codexGrid");
@@ -204,6 +206,7 @@ function drawReading() {
   readingTitle.textContent = `${state.count}-card reading revealed.`;
   renderSpread();
   renderReadingReport();
+  updateShareState("Reading ready to share.");
   showMeaning(state.reading[0]);
 }
 
@@ -218,6 +221,7 @@ function resetReading() {
     <p>Choose a count, shuffle the deck, then draw. Each card carries an upright or reversed task from your Zaney Tarot system.</p>
   `;
   renderReadingReport();
+  updateShareState("");
 }
 
 function renderSpread() {
@@ -346,6 +350,61 @@ function renderReadingReport() {
     </ol>
     <p class="prompt-line"><span class="meta-label">Integration</span><br>${report.integration}</p>
   `;
+}
+
+function updateShareState(message) {
+  shareButton.disabled = !state.reading.length;
+  shareStatus.textContent = message;
+}
+
+async function shareReading() {
+  if (!state.reading.length) {
+    updateShareState("Draw a reading first.");
+    return;
+  }
+
+  const text = buildShareText();
+  const url = window.location.href;
+
+  try {
+    if (navigator.share) {
+      await navigator.share({
+        title: "Zaney Tarot reading",
+        text,
+        url,
+      });
+      updateShareState("Reading shared.");
+      return;
+    }
+
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(`${text}\n\n${url}`);
+      updateShareState("Reading copied.");
+      return;
+    }
+
+    updateShareState("Copy unavailable in this browser.");
+  } catch (error) {
+    updateShareState("Share cancelled.");
+  }
+}
+
+function buildShareText() {
+  const report = buildReadingReport(state.reading);
+  const cards = state.reading.map((card) => {
+    const task = punctuate(card.orientation === "Upright" ? card.upright : card.reversed);
+    return `${card.position}: ${card.name} (${card.orientation}) - ${task}`;
+  });
+
+  return [
+    "Zaney Tarot",
+    `${state.reading.length}-card reading`,
+    "",
+    ...cards,
+    "",
+    `Whole reading: ${report.lead}`,
+    `Integration: ${report.integration}`,
+  ].join("\n");
 }
 
 function buildReadingReport(reading) {
@@ -533,6 +592,7 @@ document.querySelector("#increaseCards").addEventListener("click", () => setCoun
 document.querySelector("#shuffleButton").addEventListener("click", shuffleDeck);
 document.querySelector("#drawButton").addEventListener("click", drawReading);
 document.querySelector("#resetButton").addEventListener("click", resetReading);
+shareButton.addEventListener("click", shareReading);
 document.querySelector("#visualModeSelect").addEventListener("change", (event) => {
   appShell.dataset.visualMode = event.target.value;
 });
@@ -572,3 +632,4 @@ countOptions.forEach((option) => {
 
 setCount(state.count);
 renderSpread();
+updateShareState("");

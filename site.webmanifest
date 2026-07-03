@@ -1,0 +1,22 @@
+{
+  "name": "Zaney Tarot",
+  "short_name": "Zaney Tarot",
+  "description": "Anime-inspired tarot readings with card styles, table designs, and whole-reading reports.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#070b18",
+  "theme_color": "#070b18",
+  "icons": [
+    {
+      "src": "/assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

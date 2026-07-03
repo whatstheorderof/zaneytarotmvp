@@ -350,6 +350,28 @@ select {
   background: linear-gradient(180deg, rgba(238, 149, 31, 0.96), rgba(174, 91, 9, 0.98));
 }
 
+.action-button.share {
+  background: linear-gradient(180deg, rgba(55, 119, 195, 0.96), rgba(29, 63, 126, 0.98));
+}
+
+.action-button:disabled {
+  cursor: not-allowed;
+  filter: grayscale(0.25);
+  opacity: 0.5;
+}
+
+.share-status {
+  min-height: 1.2rem;
+  color: var(--cyan);
+  font-size: 0.86rem;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.actions .share-status {
+  grid-column: 1 / -1;
+}
+
 .small-button {
   min-height: 42px;
   padding: 0 16px;
@@ -1073,6 +1095,10 @@ h2 {
 
 .app-shell[data-visual-mode="pixel"] .action-button.codex {
   background: linear-gradient(180deg, #ffac19, #e17b00);
+}
+
+.app-shell[data-visual-mode="pixel"] .action-button.share {
+  background: linear-gradient(180deg, #4a84c7, #2e5f8d);
 }
 
 .app-shell[data-visual-mode="pixel"] .tarot-card {
