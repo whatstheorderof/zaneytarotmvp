@@ -2,6 +2,7 @@
   "name": "Zaney Tarot",
   "short_name": "Zaney Tarot",
   "description": "Anime-inspired tarot readings with card styles, table designs, and whole-reading reports.",
+  "id": "https://zaneytarot.com/",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

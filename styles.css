@@ -1286,6 +1286,75 @@ h2 {
   --ambient-two: rgba(243, 199, 102, 0.12);
 }
 
+.site-footer {
+  position: fixed;
+  right: 18px;
+  bottom: 14px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid rgba(243, 199, 102, 0.22);
+  border-radius: 999px;
+  padding: 8px 14px;
+  color: rgba(255, 241, 192, 0.82);
+  background: rgba(5, 9, 16, 0.72);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.24);
+  font-size: 0.78rem;
+  backdrop-filter: blur(12px);
+}
+
+.site-footer a,
+.text-link {
+  color: var(--cyan);
+  text-decoration: none;
+}
+
+.site-footer a:hover,
+.text-link:hover {
+  color: var(--gold);
+}
+
+.content-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+  background:
+    linear-gradient(120deg, rgba(5, 9, 16, 0.9), rgba(5, 9, 16, 0.52)),
+    var(--table-image) center / cover no-repeat,
+    #070b18;
+}
+
+.content-shell {
+  width: min(720px, 100%);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: clamp(24px, 5vw, 46px);
+  color: var(--text);
+  background:
+    radial-gradient(circle at 90% 0%, rgba(142, 215, 218, 0.14), transparent 18rem),
+    linear-gradient(180deg, rgba(15, 18, 34, 0.94), rgba(5, 9, 16, 0.9));
+  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.36);
+}
+
+.content-shell h1 {
+  margin: 8px 0 18px;
+}
+
+.content-shell p {
+  margin-bottom: 16px;
+  color: #e6e1d6;
+  font-size: 1.03rem;
+  line-height: 1.65;
+}
+
+.content-shell .text-link {
+  display: inline-flex;
+  margin-top: 10px;
+  font-weight: 700;
+}
+
 @keyframes shuffleLeft {
   50% {
     transform: rotate(-14deg) translateX(-42px) translateY(-12px);
@@ -1350,6 +1419,12 @@ h2 {
 
   .report-grid {
     grid-template-columns: 1fr;
+  }
+
+  .site-footer {
+    position: static;
+    justify-content: center;
+    margin: 0 14px 14px;
   }
 }
 
